@@ -8,6 +8,7 @@
         public string Description { get; set; }
         public Priority TaskPriority { get; set; }
         public DateTime CrreationDate { get; set; }
+        public virtual Category Category { get; set; }
     }
 
     public enum Priority
