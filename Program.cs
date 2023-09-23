@@ -5,7 +5,7 @@ using tasks_Project;
 var builder = WebApplication.CreateBuilder(args);
 
 //builder.Services.AddDbContext<TasksContext>(p => p.UseInMemoryDatabase("TasksDB"));
-builder.Services.AddSqlServer<TasksContext>("connection string");
+builder.Services.AddSqlServer<TasksContext>(builder.Configuration.GetConnectionString("tasksDBconnection"));
 
 var app = builder.Build();
 
