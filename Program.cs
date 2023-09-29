@@ -20,7 +20,19 @@ app.MapGet("/dbConection", async ( [FromServices] TasksContext dbContext) => {
 
 app.MapGet("api/tasks", async ([FromServices] TasksContext dbContex) =>
 {
-    return Results.Ok(dbContex.Tasks.Include(p => p.Category).Where(p => p.TaskPriority == Priority.High));
+    //return Results.Ok(dbContex.Tasks.Include(p => p.Category).Where(p => p.TaskPriority == Priority.High));
+    return Results.Ok(dbContex.Tasks.Include(p => p.Category));
 });
+
+app.MapPost("api/saveTask", async ([FromServices] TasksContext dbContex, [FromBody] tasks_Project.Models.Task task) =>
+{
+    task.TaskId = Guid.NewGuid();
+    task.CreationDate =  DateTime.Now;
+    await dbContex.AddAsync(task);
+
+    // confirm that  changes have been saved
+    await dbContex.SaveChangesAsync();
+    return Results.Ok();
+}); 
 
 app.Run();
