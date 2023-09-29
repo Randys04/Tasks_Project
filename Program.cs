@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using tasks_Project;
+using tasks_Project.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,11 @@ app.MapGet("/dbConection", async ( [FromServices] TasksContext dbContext) => {
 
     dbContext.Database.EnsureCreated();
     return Results.Ok($"Base de datos en memoria: {dbContext.Database.IsInMemory()}");
+});
+
+app.MapGet("api/tasks", async ([FromServices] TasksContext dbContex) =>
+{
+    return Results.Ok(dbContex.Tasks.Include(p => p.Category).Where(p => p.TaskPriority == Priority.High));
 });
 
 app.Run();
