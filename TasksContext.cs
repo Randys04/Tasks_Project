@@ -31,6 +31,7 @@ namespace tasks_Project
                 task.Property(p => p.Description);
                 task.Property(p => p.TaskPriority);
                 task.Property(p => p.CreationDate);
+                task.Property(p => p.CompletedTask);
                 task.Ignore(p => p.Summary);
 
             });

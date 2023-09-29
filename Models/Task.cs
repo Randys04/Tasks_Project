@@ -18,6 +18,7 @@ namespace tasks_Project.Models
         public Priority TaskPriority { get; set; }
         public DateTime CreationDate { get; set; }
         public virtual Category Category { get; set; }
+        public bool CompletedTask { get; set; }
         
         //[NotMapped]
         public string Summary { get; set; }
