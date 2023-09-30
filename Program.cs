@@ -24,7 +24,7 @@ app.MapGet("api/tasks", async ([FromServices] TasksContext dbContex) =>
     return Results.Ok(dbContex.Tasks.Include(p => p.Category));
 });
 
-app.MapPost("api/saveTask", async ([FromServices] TasksContext dbContex, [FromBody] tasks_Project.Models.Task task) =>
+app.MapPost("api/tasks", async ([FromServices] TasksContext dbContex, [FromBody] tasks_Project.Models.Task task) =>
 {
     task.TaskId = Guid.NewGuid();
     task.CreationDate =  DateTime.Now;
@@ -33,6 +33,24 @@ app.MapPost("api/saveTask", async ([FromServices] TasksContext dbContex, [FromBo
     // confirm that  changes have been saved
     await dbContex.SaveChangesAsync();
     return Results.Ok();
-}); 
+});
+
+app.MapPut("api/tasks/{id}", async ([FromServices] TasksContext dbContex, [FromBody] tasks_Project.Models.Task task, [FromRoute] Guid id) =>
+{
+    var taskUpdate = dbContex.Tasks.Find(id);
+
+    if(taskUpdate != null)
+    {
+        taskUpdate.CategoryId = task.CategoryId;
+        taskUpdate.Title = task.Title;
+        taskUpdate.Description = task.Description;
+        taskUpdate.TaskPriority = task.TaskPriority;
+
+        await dbContex.SaveChangesAsync();
+        return Results.Ok();
+    }
+    
+    return Results.NotFound();
+});
 
 app.Run();
